@@ -3,7 +3,11 @@
 #   bash install-discord-admin.sh [--force]
 set -euo pipefail
 DATA_DIR="${HERMES_DATA:-/opt/hermes/data}"
-SRC="$(cd "$(dirname "$0")/.." && pwd)"
+SRC="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+[ -f "$SRC/SKILL.md" ] && [ -f "$SRC/scripts/discord_admin.py" ] || {
+  echo "ERROR: installer must run from the repo root (SKILL.md and scripts/ not found in $SRC)" >&2
+  exit 1
+}
 DEST="$DATA_DIR/skills/discord-admin"
 
 mkdir -p "$DEST"
